@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SQLBkpandRestore
@@ -23,7 +24,9 @@ namespace SQLBkpandRestore
         {
 
             // Buton'lar için ToolTips
-            toolTip1.SetToolTip(this.btnBackup, "Butona tıklanıldığında /var/opt/mssql/data klasörüne yedek alınmaktadır");
+            toolTip1.SetToolTip(this.btnConn, "Butona tıklanıldığında Local SQL sunucuya bağlantı sağlanır");
+            toolTip1.SetToolTip(this.btnLinux, "Butona tıklanıldığında /var/opt/mssql/data klasörüne yedek alınmaktadır");
+            toolTip1.SetToolTip(this.btnWindows, "Butona tıklanıldığında istenilen klasöre yedek dosyaları alınabilir. Klasör izinlerine dikkat edilmelidir");
             toolTip1.SetToolTip(this.btnSelectRes, "Butona tıklanıldığında restore edilmesini istediğiniz databaseleri seçmek için Windows'ta pencere açar. Ctrl tuşuna basılı tutarak birden fazla seçim yapabilirsiniz");
             toolTip1.SetToolTip(this.btnTransferLogin, "Butona tıklanıldığında local SQL server'da buluanan logins bilgilerini remote host'ta bilgileri girilen SQL sunucuya aktarır");
             toolTip1.SetToolTip(this.btnStartRestore, "Butona tıklanıldığında listede seçilen databaseleri remote host'ta bilgileri girilen SQL sunucuya restore eder");
@@ -251,8 +254,7 @@ namespace SQLBkpandRestore
                 chklistboxlogin.SetItemChecked(i, false);
             }
         }
-
-        private void btnBackup_Click(object sender, EventArgs e)
+        private void btnLinux_Click(object sender, EventArgs e)
         {
             if (chklistboxDb.CheckedItems.Count == 0)
             {
@@ -263,13 +265,34 @@ namespace SQLBkpandRestore
             string serverName = txthostname.Text.Trim();
             string username = txthostsa.Text.Trim();
             string password = txthostpwd.Text;
-
             string backupFolderPath = "/var/opt/mssql/data";
 
-            StartBackup(serverName, username, password, backupFolderPath);
+            StartBackup(serverName, username, password, backupFolderPath, false);
         }
 
-        private void StartBackup(string serverName, string username, string password, string backupFolderPath)
+        private void btnWindows_Click(object sender, EventArgs e)
+        {
+            if (chklistboxDb.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Lütfen en az bir veritabanı seçin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string serverName = txthostname.Text.Trim();
+                    string username = txthostsa.Text.Trim();
+                    string password = txthostpwd.Text;
+                    string backupFolderPath = folderDialog.SelectedPath;
+
+                    StartBackup(serverName, username, password, backupFolderPath, true);
+                }
+            }
+        }
+
+        private void StartBackup(string serverName, string username, string password, string backupFolderPath, bool isWindows)
         {
             string masterConnectionString = $"Data Source={serverName};Initial Catalog=master;User ID={username};Password={password}";
 
@@ -282,7 +305,9 @@ namespace SQLBkpandRestore
                     foreach (var selectedDatabase in chklistboxDb.CheckedItems)
                     {
                         string databaseName = selectedDatabase.ToString();
-                        string backupFileName = $"{backupFolderPath}/{databaseName}.bak";
+                        string backupFileName = isWindows
+                            ? Path.Combine(backupFolderPath, $"{databaseName}.bak")
+                            : $"{backupFolderPath}/{databaseName}.bak";
 
                         string backupQuery = $"BACKUP DATABASE [{databaseName}] TO DISK = '{backupFileName}' WITH NOFORMAT, NOINIT, NAME = 'Full Backup of {databaseName}', SKIP, NOREWIND, NOUNLOAD, STATS=10;";
 
@@ -291,7 +316,8 @@ namespace SQLBkpandRestore
                             command.ExecuteNonQuery();
                         }
 
-                        MessageBox.Show($"'{databaseName}' veritabanı başarıyla yedeklendi.\nYedek dosyası: {backupFileName}", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        string displayFileName = isWindows ? Path.GetFileName(backupFileName) : backupFileName;
+                        MessageBox.Show($"'{databaseName}' veritabanı başarıyla yedeklendi.\nYedek dosyası: {displayFileName}", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)

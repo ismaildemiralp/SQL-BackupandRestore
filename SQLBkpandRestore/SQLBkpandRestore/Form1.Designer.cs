@@ -46,7 +46,6 @@
             this.txthostpwd = new System.Windows.Forms.TextBox();
             this.txthostname = new System.Windows.Forms.TextBox();
             this.txtremotepwd = new System.Windows.Forms.TextBox();
-            this.btnBackup = new System.Windows.Forms.Button();
             this.btnStartRestore = new System.Windows.Forms.Button();
             this.btnSelectRes = new System.Windows.Forms.Button();
             this.btnTransferLogin = new System.Windows.Forms.Button();
@@ -56,6 +55,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnWindows = new System.Windows.Forms.Button();
+            this.btnLinux = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -112,9 +113,9 @@
             this.btnConn.Font = new System.Drawing.Font("Gadugi", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConn.Location = new System.Drawing.Point(17, 274);
             this.btnConn.Name = "btnConn";
-            this.btnConn.Size = new System.Drawing.Size(117, 23);
+            this.btnConn.Size = new System.Drawing.Size(240, 30);
             this.btnConn.TabIndex = 4;
-            this.btnConn.Text = "Connect";
+            this.btnConn.Text = "Connect SQL Server";
             this.btnConn.UseVisualStyleBackColor = true;
             this.btnConn.Click += new System.EventHandler(this.btnConn_Click);
             // 
@@ -223,23 +224,12 @@
             this.txtremotepwd.Enter += new System.EventHandler(this.txtremotepwd_Enter);
             this.txtremotepwd.Leave += new System.EventHandler(this.txtremotepwd_Leave);
             // 
-            // btnBackup
-            // 
-            this.btnBackup.Font = new System.Drawing.Font("Gadugi", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBackup.Location = new System.Drawing.Point(140, 274);
-            this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(117, 23);
-            this.btnBackup.TabIndex = 17;
-            this.btnBackup.Text = "Backup";
-            this.btnBackup.UseVisualStyleBackColor = true;
-            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
-            // 
             // btnStartRestore
             // 
             this.btnStartRestore.Font = new System.Drawing.Font("Gadugi", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartRestore.Location = new System.Drawing.Point(20, 303);
+            this.btnStartRestore.Location = new System.Drawing.Point(20, 315);
             this.btnStartRestore.Name = "btnStartRestore";
-            this.btnStartRestore.Size = new System.Drawing.Size(240, 23);
+            this.btnStartRestore.Size = new System.Drawing.Size(240, 30);
             this.btnStartRestore.TabIndex = 18;
             this.btnStartRestore.Text = "Start Database Restore";
             this.btnStartRestore.UseVisualStyleBackColor = true;
@@ -250,7 +240,7 @@
             this.btnSelectRes.Font = new System.Drawing.Font("Gadugi", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectRes.Location = new System.Drawing.Point(20, 274);
             this.btnSelectRes.Name = "btnSelectRes";
-            this.btnSelectRes.Size = new System.Drawing.Size(117, 23);
+            this.btnSelectRes.Size = new System.Drawing.Size(117, 30);
             this.btnSelectRes.TabIndex = 19;
             this.btnSelectRes.Text = "Choose Database";
             this.btnSelectRes.UseVisualStyleBackColor = true;
@@ -261,7 +251,7 @@
             this.btnTransferLogin.Font = new System.Drawing.Font("Gadugi", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTransferLogin.Location = new System.Drawing.Point(141, 274);
             this.btnTransferLogin.Name = "btnTransferLogin";
-            this.btnTransferLogin.Size = new System.Drawing.Size(117, 23);
+            this.btnTransferLogin.Size = new System.Drawing.Size(117, 30);
             this.btnTransferLogin.TabIndex = 20;
             this.btnTransferLogin.Text = "Start Login Transfer";
             this.btnTransferLogin.UseVisualStyleBackColor = true;
@@ -319,11 +309,11 @@
             this.label2.Font = new System.Drawing.Font("Gadugi", 20F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.Coral;
             this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
-            this.label2.Location = new System.Drawing.Point(9, 11);
+            this.label2.Location = new System.Drawing.Point(47, 11);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(260, 32);
+            this.label2.Size = new System.Drawing.Size(183, 32);
             this.label2.TabIndex = 26;
-            this.label2.Text = "Remote SQL Server";
+            this.label2.Text = "Remote Host";
             // 
             // pictureBox1
             // 
@@ -340,10 +330,11 @@
             // 
             this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.btnWindows);
+            this.panel2.Controls.Add(this.btnLinux);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.txthostname);
             this.panel2.Controls.Add(this.btnConn);
-            this.panel2.Controls.Add(this.btnBackup);
             this.panel2.Controls.Add(this.chkhostpwd);
             this.panel2.Controls.Add(this.txthostpwd);
             this.panel2.Controls.Add(this.txthostsa);
@@ -352,17 +343,43 @@
             this.panel2.Size = new System.Drawing.Size(281, 384);
             this.panel2.TabIndex = 23;
             // 
+            // btnWindows
+            // 
+            this.btnWindows.Font = new System.Drawing.Font("Gadugi", 7F, System.Drawing.FontStyle.Bold);
+            this.btnWindows.Location = new System.Drawing.Point(140, 315);
+            this.btnWindows.Name = "btnWindows";
+            this.btnWindows.Size = new System.Drawing.Size(117, 30);
+            this.btnWindows.TabIndex = 27;
+            this.btnWindows.Text = "Backup for Windows";
+            this.btnWindows.UseVisualStyleBackColor = true;
+            this.btnWindows.Click += new System.EventHandler(this.btnWindows_Click);
+            // 
+            // btnLinux
+            // 
+            this.btnLinux.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnLinux.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnLinux.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnLinux.Font = new System.Drawing.Font("Gadugi", 7F, System.Drawing.FontStyle.Bold);
+            this.btnLinux.Location = new System.Drawing.Point(17, 315);
+            this.btnLinux.Name = "btnLinux";
+            this.btnLinux.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnLinux.Size = new System.Drawing.Size(117, 30);
+            this.btnLinux.TabIndex = 26;
+            this.btnLinux.Text = "Backup for Linux";
+            this.btnLinux.UseVisualStyleBackColor = true;
+            this.btnLinux.Click += new System.EventHandler(this.btnLinux_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Gadugi", 20F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.Coral;
             this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
-            this.label1.Location = new System.Drawing.Point(25, 11);
+            this.label1.Location = new System.Drawing.Point(66, 11);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(226, 32);
+            this.label1.Size = new System.Drawing.Size(149, 32);
             this.label1.TabIndex = 25;
-            this.label1.Text = "Local SQL Server";
+            this.label1.Text = "Local Host";
             // 
             // pictureBox2
             // 
@@ -501,7 +518,6 @@
         private System.Windows.Forms.TextBox txthostpwd;
         private System.Windows.Forms.TextBox txthostname;
         private System.Windows.Forms.TextBox txtremotepwd;
-        private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Button btnStartRestore;
         private System.Windows.Forms.Button btnSelectRes;
         private System.Windows.Forms.Button btnTransferLogin;
@@ -520,6 +536,8 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button btnWindows;
+        private System.Windows.Forms.Button btnLinux;
     }
 }
 
