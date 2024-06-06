@@ -334,7 +334,7 @@ namespace SQLBkpandRestore
             return new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private void YaratLogins(string serverName, string username, string password)
+        private void CreateLogins(string serverName, string username, string password)
         {
             string connectionString = $"Data Source={serverName};Initial Catalog=master;User ID={username};Password={password}";
 
@@ -403,7 +403,7 @@ namespace SQLBkpandRestore
                 {
                     connection.Open();
                     // Logins'leri remote sunucuya aktar
-                    YaratLogins(RemoteServerName, RemoteUsername, RemotePassword);
+                    CreateLogins(RemoteServerName, RemoteUsername, RemotePassword);
                 }
                 catch (Exception ex)
                 {
